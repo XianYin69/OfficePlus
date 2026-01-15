@@ -1,48 +1,50 @@
 ﻿//It is a new page of office-plus
 using Microsoft.CommandPalette.Extensions;
 using Microsoft.CommandPalette.Extensions.Toolkit;
-using System.Collections.Generic;
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
+using System.Globalization;
 using System.IO;
 using System.Linq;
-using OfficePlus.Pages.i18n;
-using static OfficePlus.Pages.i18n.i18n;
+using System.Text.Json;
+using SuperSpace.Pages.i18n;
+using static SuperSpace.Pages.i18n.i18n;
 
-namespace OfficePlus.Pages;
+namespace SuperSpace.Pages;
 
-internal sealed partial class ExcelPage : ListPage
+internal sealed partial class WordPage : ListPage
 {
-    public ExcelPage()
+    public WordPage()
     {
-        Icon = IconHelpers.FromRelativePath("Assets\\OfficePlusExcelPageIcon.png");
-        Title = "Excel";
+        Icon = IconHelpers.FromRelativePath("Assets\\SuperSpaceWordPageIcon.png");
+        Title = "Word";
         Name = "";
     }
     public override IListItem[] GetItems()
     {
         var items = new List<IListItem>
         {
-            new ListItem(new RunExcelCommand("EXCEL.EXE"))
+            new ListItem(new RunWordCommand("WINWORD.EXE"))
             {
-                Title = T("ExcelPage.CreateNewDoc"),
-                Subtitle = T("ExcelPage.CreateNewDocSub"),
+                Title = T("WordPage.CreateNewDoc"),
+                Subtitle = T("WordPage.CreateNewDocSub"),
                 Icon = IconHelpers.FromRelativePath("Assets\\FluentColorDocumentAdd48.png"),
             },
-            new ListItem(new ExcelRecentPage())
+            new ListItem(new WordRecentPage())
             {
-                Title = T("ExcelPage.OpenDoc"),
-                Subtitle = T("ExcelPage.OpenDocSub"),
+                Title = T("WordPage.OpenDoc"),
+                Subtitle = T("WordPage.OpenDocSub"),
                 Icon = IconHelpers.FromRelativePath("Assets\\FluentColorDocumentEdit24.png"),
             }
         };
         return items.ToArray();
     }
 }
-internal sealed class RunExcelCommand :　InvokableCommand
+internal sealed partial class RunWordCommand : InvokableCommand
 {
     private readonly string _executable;
-    public RunExcelCommand(string executable)
+    public RunWordCommand(string executable)
     {
         _executable = executable;
     }
@@ -65,18 +67,18 @@ internal sealed class RunExcelCommand :　InvokableCommand
     }
 }
 
-internal sealed partial class ExcelRecentPage :　ListPage
+internal sealed partial class WordRecentPage : ListPage
 {
     private const int MaxRecentItems = 20;
 
-    //Define the suffix filter related to Excel
-    private readonly HashSet<string> _excelExtensions = new(StringComparer.OrdinalIgnoreCase)
+    //Define the suffix filter related to Word
+    private readonly HashSet<string> _WordExtensions = new(StringComparer.OrdinalIgnoreCase)
     {
         "xls", "xlsx", "xlsm", "xlsb", "xltx", "xltm", "csv", "xml", "xlt", "xlm", "slk", "dlf"
     };
-    public ExcelRecentPage()
+    public WordRecentPage()
     {
-        Title = T("ExcelPage.WordRecentPage");
+        Title = T("WordPage.WordRecentPage");
         Icon = IconHelpers.FromRelativePath("Assets\\FluentColorDocumentEdit24.png");
     }
     public override IListItem[] GetItems()
@@ -94,7 +96,7 @@ internal sealed partial class ExcelRecentPage :　ListPage
 
                 // 2. Apply filter
                 var filteredFiles = files
-                    .Where(f => IsExcelFile(f.Name))
+                    .Where(f => IsWordFile(f.Name))
                     .Take(MaxRecentItems);
                 foreach (var file in filteredFiles)
                 {
@@ -102,31 +104,31 @@ internal sealed partial class ExcelRecentPage :　ListPage
                     string DisplayName = file.Name.EndsWith(".lnk", StringComparison.OrdinalIgnoreCase)
                         ? Path.GetFileNameWithoutExtension(file.Name)
                         : file.Name;
-                    items.Add(new ListItem(new RunExcelCommand(file.FullName))
+                    items.Add(new ListItem(new RunWordCommand(file.FullName))
                     {
                         Title = DisplayName,
-                        Subtitle = T("LaterEdit", file.LastWriteTime.ToShortDateString()),
+                        Subtitle = T("WordPage.LaterEdit", file.LastWriteTime.ToShortDateString()),
                         Icon = IconHelpers.FromRelativePath("Assets\\FluentColorDocument48.png")
                     });
                 }
             }
             if (items.Count == 0)
             {
-                items.Add(new ListItem(new NoOpCommand()) { Title = T("ExcelPage.CantFindFile") });
+                items.Add(new ListItem(new NoOpCommand()) { Title = T("WordPage.CantFindFile") });
             }
         }
         catch (Exception ex)
         {
-            items.Add(new ListItem(new NoOpCommand()) { Title = T("ExcelPage.ReadError", ex.Message) });
+            items.Add(new ListItem(new NoOpCommand()) { Title = T("WordPage.ReadError", ex.Message) });
         }
         return items.ToArray();
     }
-    // IsExcelFile method
-    private bool IsExcelFile(string fileName)
+    // IsWordFile method
+    private bool IsWordFile(string fileName)
     {
         /*
          * check suffix
          */
-        return _excelExtensions.Any(ext => fileName.Contains(ext, StringComparison.OrdinalIgnoreCase));
+        return _WordExtensions.Any(ext => fileName.Contains(ext, StringComparison.OrdinalIgnoreCase));
     }
 }

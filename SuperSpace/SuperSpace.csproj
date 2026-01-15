@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
-    <RootNamespace>OfficePlus</RootNamespace>
+    <RootNamespace>SuperSpace</RootNamespace>
     <ApplicationManifest>app.manifest</ApplicationManifest>
 
     <WindowsSdkPackageVersion>10.0.26100.68-preview</WindowsSdkPackageVersion>
@@ -13,6 +13,7 @@
     <PublishProfile>win-$(Platform).pubxml</PublishProfile>
     <EnableMsixTooling>true</EnableMsixTooling>
     <Nullable>enable</Nullable>
+    <AssemblyName>SuperSpace</AssemblyName>
   </PropertyGroup>
 
   <ItemGroup>
@@ -21,7 +22,6 @@
     <Content Include="Assets\Square150x150Logo.scale-200.png" />
     <Content Include="Assets\Square44x44Logo.scale-200.png" />
     <Content Include="Assets\Square44x44Logo.targetsize-24_altform-unplated.png" />
-    <Content Include="Assets\StoreLogo.png" />
     <Content Include="Assets\Wide310x150Logo.scale-200.png" />
   </ItemGroup>
 
@@ -75,7 +75,7 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <PublishSingleFile>true</PublishSingleFile>
+    <PublishSingleFile>false</PublishSingleFile>
     <IsAotCompatible>true</IsAotCompatible>
 
     <CsWinRTAotOptimizerEnabled>true</CsWinRTAotOptimizerEnabled>
@@ -90,7 +90,7 @@
     <AppxPackageIdentityName>EthanYan.OfficePlusExtensionforCommandPalette</AppxPackageIdentityName>
     <AppxPackagePublisher>CN=28366248-4867-41FB-8408-2387CA3809DB</AppxPackagePublisher>
     <AppxPackageVersion>0.0.1.0</AppxPackageVersion>
-    <AppxPackageSigningEnabled>false</AppxPackageSigningEnabled>
+    <AppxPackageSigningEnabled>true</AppxPackageSigningEnabled>
     
     <!--Disable Trim-->
     <PublishTrimmed>false</PublishTrimmed>
